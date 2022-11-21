@@ -43,7 +43,7 @@ public class collabcraft extends JavaPlugin implements Listener,CommandExecutor 
                     try{
                         Thread.sleep(time*10);
                     }catch(Exception e){
-                        
+
                     }
                 }
             }
@@ -53,7 +53,15 @@ public class collabcraft extends JavaPlugin implements Listener,CommandExecutor 
     private Thread turnThread;
     public void onEnable() {
         Bukkit.getPluginManager().registerEvents(this, this);
-        turnTime.show();
+        turnTime.setVisible(true);
+    }
+    public void onPlayerJoin(Player p){
+        p.setGameMode(GameMode.SPECTATOR);
+    }
+    public void onPlayerQuit(Player p){
+        if (waiting.get(0) == p){
+            waiting.remove(p);
+        }
     }
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args){
         if (sender instanceof Player) {
