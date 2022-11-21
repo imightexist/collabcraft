@@ -1,0 +1,28 @@
+commands:
+  bypassturn:
+    description: Bypass turn (for ops)
+    usage: /bypassturn
+    permission-message: no.
+    permission: collabcraft.admin
+  taketurn:
+    description: Take turn
+    usage: /taketurn
+    permission-message: no.
+    permission: collabcraft.standard
+  endturn:
+    description: End turn
+    usage: /endturn
+    permission-message: no.
+    permission: collabcraft.standard
+  controllertp:
+    description: Teleport to the player that is controlling
+    usage: /controllertp
+    permission-message: no.
+    permission: collabcraft.standard
+permissions:
+  collabcraft.admin:
+    description: Commands limited to op
+    default: op
+  collabcraft.standard:
+    description: Commands for basic users
+    default: not op
