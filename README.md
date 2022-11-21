@@ -1,5 +1,7 @@
 # collabcraft
 control collaborative minecrat player (1.16.5)
+
+part of the eggcraft project, discord here: https://discord.gg/aqVfqhwpQ6
 ## how to compile
 1. download maven
 2. in the main directory run `maven install`
