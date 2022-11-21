@@ -1,3 +1,6 @@
+name: collabcraft
+version: 1.1.1
+main: io.papermc.collabcraft.collabcraft
 commands:
   bypassturn:
     description: Bypass turn (for ops)
