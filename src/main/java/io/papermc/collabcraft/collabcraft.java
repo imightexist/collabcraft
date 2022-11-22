@@ -8,6 +8,7 @@ import org.bukkit.boss.*;
 import org.bukkit.inventory.*;
 import org.bukkit.*;
 import org.bukkit.entity.*;
+import org.bukkit.event.inventory.*;
 import org.bukkit.event.player.*;
 import org.bukkit.plugin.java.JavaPlugin;
 import java.util.*;
@@ -18,21 +19,29 @@ public class collabcraft extends JavaPlugin implements Listener,CommandExecutor 
     private ArrayList<Player> waiting = new ArrayList<Player>();
     private int time = 30; //in seconds
     private BossBar turnTime = Bukkit.createBossBar("PlayerNameHere's turn",BarColor.BLUE,BarStyle.SOLID);
+    private PlayerInventory inventory = null;
+    private Location location = Bukkit.getWorld("world").getSpawnLocation();
+    private Location spawn = Bukkit.getWorld("world").getSpawnLocation();
     private Runnable createRunnable(Player p){
         Runnable r = new Runnable(){
             public void run(){
                 String name = p.getName();
                 double progress = 0.0;
                 turnTime.setTitle(name + "'s turn");
+                turnTime.setProgress(0.0);
                 while (waiting.get(0) == p){
                     if (progress >= 100.0){
                         waiting.remove(0);
+                        inventory = p.getInventory();
+                        location = p.getLocation();
+                        spawn = p.getBedSpawnLocation();
                         if (!(waiting.size() == 0)){
                             Player author = waiting.get(0);
                             p.setGameMode(GameMode.SPECTATOR);
                             author.getInventory().setArmorContents(p.getInventory().getArmorContents());
                             author.getInventory().setExtraContents(p.getInventory().getExtraContents());
                             author.teleport(p.getLocation());
+                            author.setBedSpawnLocation(p.getBedSpawnLocation());
                             author.setGameMode(GameMode.SURVIVAL);
                             turnThread = new Thread(createRunnable(author));
                             turnThread.start();
@@ -59,7 +68,7 @@ public class collabcraft extends JavaPlugin implements Listener,CommandExecutor 
         p.setGameMode(GameMode.SPECTATOR);
     }
     public void onPlayerQuit(Player p){
-        if (waiting.get(0) == p){
+        if (waiting.contains(p)){
             waiting.remove(p);
         }
     }
@@ -68,10 +77,14 @@ public class collabcraft extends JavaPlugin implements Listener,CommandExecutor 
             Player author = (Player) sender;
             if (cmd.getName().equalsIgnoreCase("bypassturn")){
                 waiting.add(0,author);
+                inventory = controller.getInventory();
+                location = controller.getLocation();
+                spawn = controller.getBedSpawnLocation();
                 controller.setGameMode(GameMode.SPECTATOR);
                 author.getInventory().setArmorContents(controller.getInventory().getArmorContents());
                 author.getInventory().setExtraContents(controller.getInventory().getExtraContents());
                 author.teleport(controller.getLocation());
+                author.setBedSpawnLocation(spawn);
                 controller = author;
                 controller.setGameMode(GameMode.SURVIVAL);
                 turnThread = new Thread(createRunnable(controller));
@@ -79,6 +92,11 @@ public class collabcraft extends JavaPlugin implements Listener,CommandExecutor 
                 return true;
             }else if (cmd.getName().equalsIgnoreCase("endturn")){
                 if (waiting.contains(author)){
+                    if (waiting.get(0) == author){
+                        inventory = author.getInventory();
+                        location = author.getLocation();
+                        spawn = author.getBedSpawnLocation();
+                    }
                     waiting.remove(author);
                     return true;
                 }else{
@@ -88,6 +106,11 @@ public class collabcraft extends JavaPlugin implements Listener,CommandExecutor 
                 if (!(waiting.contains(author))){
                     waiting.add(author);
                     if (waiting.get(0) == author){
+                        author.setGameMode(GameMode.SURVIVAL);
+                        author.getInventory().setArmorContents(inventory.getArmorContents());
+                        author.getInventory().setExtraContents(inventory.getExtraContents());
+                        author.teleport(location);
+                        author.setBedSpawnLocation(spawn);
                         turnThread = new Thread(createRunnable(author));
                         turnThread.start();
                     }
