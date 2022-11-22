@@ -22,6 +22,7 @@ public class collabcraft extends JavaPlugin implements Listener,CommandExecutor 
     private PlayerInventory inventory = null;
     private Location location = null;
     private Location spawn = null;
+    private boolean joined = false;
     private Runnable createRunnable(Player p){
         Runnable r = new Runnable(){
             public void run(){
@@ -65,6 +66,11 @@ public class collabcraft extends JavaPlugin implements Listener,CommandExecutor 
         turnTime.setVisible(true);
     }
     public void onPlayerJoin(Player p){
+        if (joined == false){
+            inventory = p.getInventory();
+            location = p.getLocation();
+            spawn = p.getBedSpawnLocation();
+        }
         p.setGameMode(GameMode.SPECTATOR);
     }
     public void onPlayerQuit(Player p){
