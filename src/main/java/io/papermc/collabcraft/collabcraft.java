@@ -20,8 +20,8 @@ public class collabcraft extends JavaPlugin implements Listener,CommandExecutor 
     private int time = 30; //in seconds
     private BossBar turnTime = Bukkit.createBossBar("PlayerNameHere's turn",BarColor.BLUE,BarStyle.SOLID);
     private PlayerInventory inventory = null;
-    private Location location = Bukkit.getWorld("world").getSpawnLocation();
-    private Location spawn = Bukkit.getWorld("world").getSpawnLocation();
+    private Location location = null;
+    private Location spawn = null;
     private Runnable createRunnable(Player p){
         Runnable r = new Runnable(){
             public void run(){
