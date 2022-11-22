@@ -15,7 +15,7 @@
     </repositories>
     <groupId>io.papermc.collabcraft</groupId>
     <artifactId>collabcraft</artifactId>
-    <version>1.1</version>
+    <version>1.2</version>
     <modelVersion>4.0.0</modelVersion>
     <dependencies>
         <dependency>
