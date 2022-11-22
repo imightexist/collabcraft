@@ -16,3 +16,8 @@ part of the eggcraft project, discord here: https://discord.gg/aqVfqhwpQ6
 2. download jar
 3. in directory of paper make a folder called "plugins"
 4. put jar in plugins
+## changes for each major version
+- 1.3: fix after testing
+- 1.2: get plugin to load
+- 1.1: fix before testing
+- 1.0: add base code
